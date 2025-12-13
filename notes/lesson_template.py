@@ -1,4 +1,14 @@
 #!/usr/bin/env python
+# Optional: uv inline script metadata (per-lesson deps).
+# Uncomment and edit if a lesson needs third-party packages while staying
+# self-contained.
+#
+# /// script
+# requires-python = ">=3.14,<4.0"
+# dependencies = [
+#   # "rich",
+# ]
+# ///
 """
 [Lesson Number]. [Lesson Title].
 
@@ -29,6 +39,11 @@ Type Hints & Mypy:
 - Prefer small, typed helpers over large untyped scripts.
 
 Execution:
+- This repo assumes `uv` is installed.
+- Project-style (default): `uv run python path/to/lesson.py`
+- Script-style (self-contained deps): add inline metadata (above) and run:
+  - `uv run --script path/to/lesson.py`
+  - Optional: `uv lock --script path/to/lesson.py` for reproducibility
 - Running `python path/to/lesson.py` should execute `main()` and print something useful.
 """
 
