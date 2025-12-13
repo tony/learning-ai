@@ -1,15 +1,25 @@
 # Lesson Template
 
-Use this template when creating a new lesson module in `src/`.
+Prefer starting from `notes/lesson_template.py` (it is runnable and has doctests). Use this file
+as a quick checklist/reference.
 
 Guidelines:
-- Keep lessons **self-contained** and runnable: `python path/to/lesson.py`
-- Include **doctests** (run via `uv run pytest` with `--doctest-modules`)
-- Keep type hints **mypy --strict** compatible
-- Use **NumPy** docstring convention
-- Include clear **time/space complexity** notes where applicable
+- Name lessons with a numeric prefix (e.g., `src/001_intro.py`).
+- Keep lessons **self-contained** and runnable: `python src/001_intro.py`
+- Include **doctests** (pytest runs them via `--doctest-modules`).
+- Keep type hints compatible with **`mypy --strict`**.
+- Use **NumPy** docstring convention for function docstrings.
+- Include clear **time/space complexity** notes where applicable.
+- If output can vary (timing, concurrency), use doctest ellipses:
+  `# doctest: +ELLIPSIS`
 
-If you want a runnable starting point, see `notes/lesson_template.py`.
+## Start Here
+
+```bash
+cp notes/lesson_template.py src/001_intro.py
+python src/001_intro.py
+uv run pytest src/001_intro.py
+```
 
 ## Skeleton
 
@@ -20,23 +30,28 @@ If you want a runnable starting point, see `notes/lesson_template.py`.
 
 Concepts:
 - Core concept explanation
-- Best case: O(?) complexity with condition
-- Average case: O(?) complexity
-- Worst case: O(?) complexity with condition
-- Space complexity: O(?)
+- Prerequisites
 
 Narrative:
-[Explain why this concept matters in the growing system]
+[Explain why this concept matters in a growing AI system]
+
+Complexity:
+- Best: O(?) when condition
+- Average: O(?)
+- Worst: O(?) when condition
+- Space: O(?)
 
 Doctests:
 [Brief description of what the doctests demonstrate]
 """
 
 import timeit
-from typing import Any
+from typing import TypeVar
+
+T = TypeVar("T")
 
 
-def main_concept_function(value: Any) -> Any:
+def main_concept_function(value: T) -> T:
     """
     Purpose description.
 
@@ -56,7 +71,10 @@ def main_concept_function(value: Any) -> Any:
 
 def main() -> None:
     """Demonstrate the concept and optionally time it."""
-    timing = timeit.timeit(lambda: main_concept_function("example"), number=10_000)
+    example = "example"
+    print(main_concept_function(example))
+
+    timing = timeit.timeit(lambda: main_concept_function(example), number=10_000)
     print(f"Timing: {timing:.6f}s")
 
 
@@ -66,4 +84,3 @@ if __name__ == "__main__":
     doctest.testmod()
     main()
 ```
-
