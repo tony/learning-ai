@@ -40,7 +40,7 @@ This is an educational project for learning AI concepts, organized as numbered l
 - **Start every new lesson from the template**: copy `notes/lesson_template.py` into `src/` and edit it.
 - **Follow the canonical docs**:
   - `notes/LESSON_TEMPLATE.md` / `notes/lesson_template.py` for structure, CLI, doctests, and quality gates
-  - `notes/progression.md` for the curriculum order, prerequisites, and lesson scope
+  - `notes/lesson_plan.md` for the curriculum order, prerequisites, and lesson scope
 
 ### Project Structure
 - `src/`: Lesson modules (e.g., `src/001_intro.py`) — the curriculum lives here.
@@ -52,7 +52,7 @@ This is an educational project for learning AI concepts, organized as numbered l
 All lessons must follow the structure and conventions in:
 - `notes/lesson_template.py` (authoritative runnable template)
 - `notes/LESSON_TEMPLATE.md` (what to edit + quality gates)
-- `notes/progression.md` (curriculum sequence)
+- `notes/lesson_plan.md` (curriculum sequence)
 
 ### Narrative Guidance
 
