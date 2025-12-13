@@ -15,8 +15,8 @@ uv run pytest
 # Run tests with watch mode (auto-rerun on file changes)
 uv run pytest-watcher
 
-# Run a single test file
-uv run pytest src/algorithms/002_linear_search.py
+# Run a single lesson file
+uv run pytest src/001_intro.py
 
 # Lint and format code
 uv run ruff check .
@@ -26,39 +26,39 @@ uv run ruff format .
 uv run mypy .
 
 # Run doctests for a specific file
-python -m doctest -v src/algorithms/002_linear_search.py
+python -m doctest -v src/001_intro.py
 ```
 
 ## Code Architecture
 
-This is an educational project for learning data structures and algorithms, organized as numbered lessons with a consistent structure:
+This is an educational project for learning AI concepts, organized as numbered lessons with a consistent structure.
 
 ### Project Structure
-- `src/algorithms/`: Algorithm implementations (001-019 + bst subfolder)
-- `src/data_structures/`: Data structure implementations (001-010)
-- Each lesson is a self-contained module that can be run with `python filename.py`
+- `src/`: Lesson modules (e.g., `src/001_intro.py`)
+- `notes/`: Templates and supporting material
+- Each lesson is self-contained and runnable with `python path/to/lesson.py`
 
 ### Lesson Template Structure
 
-All lessons follow the template in `notes/lesson_template.py`. The exact structure is:
+All lessons start from `notes/lesson_template.py` (see also `notes/LESSON_TEMPLATE.md`).
 
 ```python
 #!/usr/bin/env python
 """
 [Lesson Number]. [Lesson Title].
 
-Algorithm: [Algorithm Name] or Data Structure: [Structure Name]
-
 Concepts:
 - Core concept explanation
-- Best case: O(?) complexity with condition
-- Average case: O(?) complexity
-- Worst case: O(?) complexity with condition
-- Space complexity: O(?)
+- Prerequisites
 
 Narrative:
-[Connection to either Data Analytics Pipeline or SRAS (Smart Routing and Analytics System)]
-[Explanation of why this concept matters in the growing system]
+[Explain why this concept matters in a growing AI system]
+
+Complexity:
+- Best: O(?) when condition
+- Average: O(?)
+- Worst: O(?) when condition
+- Space: O(?)
 
 Doctests:
 [Brief description of what the doctests demonstrate]
@@ -100,28 +100,13 @@ if __name__ == "__main__":
     main()
 ```
 
-### Narrative Flows
+### Narrative Guidance
 
-The project uses two main narrative contexts:
-
-1. **Data Analytics Pipeline** (for data structures):
-   - Starts with storing raw data (arrays, lists)
-   - Progresses to task management (stacks, queues)
-   - Advances to efficient lookups (hash tables, trees)
-   - Culminates in specialized structures (indexes)
-
-2. **SRAS - Smart Routing and Analytics System** (for algorithms):
-   - Begins with basic searching and sorting
-   - Evolves to handle growing data volumes
-   - Introduces optimization techniques
-   - Addresses real-world constraints
-
-### Learning Progressions
-
-Follow the numbered progressions in:
-- `notes/progression-ds.md`: Data structures learning path
-- `notes/progression-algo.md`: Algorithms learning path
-- `notes/progression-algo-binary-search-trees.md`: BST-specific progression
+Anchor lessons in practical AI work:
+- Data collection and preprocessing
+- Training and evaluation
+- Serving/inference and monitoring
+- Reliability, performance, and correctness
 
 ### Key Development Practices
 - All code must pass `mypy --strict`
