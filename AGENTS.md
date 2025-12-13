@@ -33,72 +33,26 @@ python -m doctest -v src/001_intro.py
 
 This is an educational project for learning AI concepts, organized as numbered lessons with a consistent structure.
 
+### Lessons (Authoring Rules)
+
+- **All lesson content lives in `src/`.** Add new lessons and update existing lesson modules only under `src/`.
+- Treat `notes/` as reference material (templates + planning). Do not place lesson implementations in `notes/`.
+- **Start every new lesson from the template**: copy `notes/lesson_template.py` into `src/` and edit it.
+- **Follow the canonical docs**:
+  - `notes/LESSON_TEMPLATE.md` / `notes/lesson_template.py` for structure, CLI, doctests, and quality gates
+  - `notes/progression.md` for the curriculum order, prerequisites, and lesson scope
+
 ### Project Structure
-- `src/`: Lesson modules (e.g., `src/001_intro.py`)
-- `notes/`: Templates and supporting material
-- Each lesson is self-contained and runnable with `python path/to/lesson.py`
+- `src/`: Lesson modules (e.g., `src/001_intro.py`) — the curriculum lives here.
+- `notes/`: Templates, supporting material, and the lesson plan (not lesson implementations).
+- Each lesson is self-contained and runnable with `python path/to/lesson.py` (prefer `uv run python ...`).
 
 ### Lesson Template Structure
 
-All lessons start from `notes/lesson_template.py` (see also `notes/LESSON_TEMPLATE.md`).
-
-```python
-#!/usr/bin/env python
-"""
-[Lesson Number]. [Lesson Title].
-
-Concepts:
-- Core concept explanation
-- Prerequisites
-
-Narrative:
-[Explain why this concept matters in a growing AI system]
-
-Complexity:
-- Best: O(?) when condition
-- Average: O(?)
-- Worst: O(?) when condition
-- Space: O(?)
-
-Doctests:
-[Brief description of what the doctests demonstrate]
-"""
-
-import timeit
-from typing import Any
-
-def main_concept_function(params: type) -> ReturnType:
-    """
-    Purpose description.
-    
-    Complexity:
-    - Best: O(?) when condition
-    - Average: O(?)
-    - Worst: O(?) when condition
-    - Space: O(?)
-    
-    Examples
-    --------
-    >>> main_concept_function(example_input)
-    expected_output
-    """
-    # Implementation
-    pass
-
-def main() -> None:
-    """
-    Main demonstration with performance measurements.
-    Shows practical examples and timing comparisons.
-    """
-    # Performance testing with timeit
-    # Result interpretation with narrative context
-    pass
-
-if __name__ == "__main__":
-    import doctest
-    doctest.testmod()
-    main()
-```
+All lessons must follow the structure and conventions in:
+- `notes/lesson_template.py` (authoritative runnable template)
+- `notes/LESSON_TEMPLATE.md` (what to edit + quality gates)
+- `notes/progression.md` (curriculum sequence)
 
 ### Narrative Guidance
 
