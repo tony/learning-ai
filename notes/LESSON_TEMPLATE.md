@@ -5,7 +5,7 @@ as a quick checklist/reference.
 
 Guidelines:
 - Name lessons with a numeric prefix (e.g., `src/001_intro.py`).
-- Keep lessons **self-contained** and runnable: `python src/001_intro.py`
+- We require **`uv`**. Prefer running lessons via `uv run python src/001_intro.py`.
 - Include **doctests** (pytest runs them via `--doctest-modules`).
 - Keep type hints compatible with **`mypy --strict`**.
 - Use **NumPy** docstring convention for function docstrings.
@@ -17,8 +17,35 @@ Guidelines:
 
 ```bash
 cp notes/lesson_template.py src/001_intro.py
-python src/001_intro.py
+uv run python src/001_intro.py
 uv run pytest src/001_intro.py
+```
+
+## UV Script Style (Supported)
+
+If a single lesson needs third-party dependencies but you don’t want to add them to the whole
+project, you can use `uv`'s **inline script metadata** and run the lesson as a script:
+
+```python
+# /// script
+# requires-python = ">=3.14,<4.0"
+# dependencies = [
+#   "rich",
+# ]
+# ///
+```
+
+Run it with:
+
+```bash
+uv run --script src/010_example.py
+uv lock --script src/010_example.py
+```
+
+Executable shebang style is also supported:
+
+```python
+#!/usr/bin/env -S uv run --script
 ```
 
 ## Skeleton
