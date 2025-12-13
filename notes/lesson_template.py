@@ -1,12 +1,16 @@
 #!/usr/bin/env python
 """
-Lesson Template.
+[Lesson Number]. [Lesson Title].
 
-Use this as the starting point for new lessons in `src/`.
+Use this as the starting point for new lessons in `src/` (copy + edit).
 
 Concepts:
-- Clearly state the main idea of the lesson
-- List any prerequisites
+- State the concept in 1–2 lines.
+- List prerequisites (what earlier lessons or Python features are assumed).
+- Keep the lesson focused: one concept per file.
+
+Narrative:
+- Explain why this concept matters in a growing AI system (models, data, eval, serving).
 
 Complexity:
 - Best case: O(?) with condition
@@ -14,11 +18,18 @@ Complexity:
 - Worst case: O(?) with condition
 - Space complexity: O(?)
 
-Narrative:
-[Explain why this concept matters in a growing AI system]
-
 Doctests:
-[Briefly describe what the doctests demonstrate]
+- Include doctests demonstrating the core concept and edge cases.
+- Keep output stable; if order/timing can vary, use ellipses:
+  `# doctest: +ELLIPSIS`
+- `uv run pytest` runs doctests automatically via `--doctest-modules`.
+
+Type Hints & Mypy:
+- Keep annotations compatible with `mypy --strict`.
+- Prefer small, typed helpers over large untyped scripts.
+
+Execution:
+- Running `python path/to/lesson.py` should execute `main()` and print something useful.
 """
 
 from __future__ import annotations
@@ -55,12 +66,12 @@ def main() -> None:
     print(main_concept_function(example))
 
     timing = timeit.timeit(lambda: main_concept_function(example), number=10_000)
-    print(f"Timing: {timing:.6f}s")
+    print(f"Timing: {timing:.6f}s")  # Avoid timing output in doctests.
 
 
 if __name__ == "__main__":
     import doctest
 
+    # Run doctests when executed directly.
     doctest.testmod()
     main()
-
