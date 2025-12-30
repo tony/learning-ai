@@ -76,6 +76,37 @@ Anchor lessons in practical AI work:
 - Performance timing in main() functions helps understand complexity
 - Use minimal sleeps and ellipses for concurrency tests
 
+### Doctests
+
+**All functions and methods MUST have working doctests.** Doctests serve as both documentation and tests.
+
+**CRITICAL RULES:**
+- Doctests MUST actually execute - never comment out function calls or similar
+- Doctests MUST NOT be converted to `.. code-block::` as a workaround (code-blocks don't run)
+- If you cannot create a working doctest, **STOP and ask for help**
+
+**Available tools for doctests:**
+- `doctest_namespace` fixtures: `tmp_path` (add more via `conftest.py`)
+- Ellipsis for variable output: `# doctest: +ELLIPSIS`
+
+**`# doctest: +SKIP` is NOT permitted** - it's just another workaround that doesn't test anything.
+
+**When output varies, use ellipsis:**
+```python
+>>> import time
+>>> time.time()  # doctest: +ELLIPSIS
+1...
+```
+
+**For async code:**
+```python
+>>> import asyncio
+>>> async def example():
+...     return "result"
+>>> asyncio.run(example())
+'result'
+```
+
 ## Git Commit Standards
 
 ### Commit Message Format
