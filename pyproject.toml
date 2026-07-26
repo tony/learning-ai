@@ -91,7 +91,10 @@ doctest_optionflags = [
   "ELLIPSIS",
   "NORMALIZE_WHITESPACE",
 ]
-testpaths = ["src"]
+# notes/ holds the lesson template, whose doctests are the only executable
+# examples until src/ has lessons; without it pytest collects nothing and
+# exits 5.
+testpaths = ["src", "notes"]
 
 [tool.pytest-watcher]
 now = true
