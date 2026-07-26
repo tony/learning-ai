@@ -34,6 +34,8 @@ Analogy: A self-unpacking suitcase.
 >>> 1 + 1
 2
 """
+
+
 def demonstrate_import_pain() -> str:
     return """
     # THE PAIN (without uv):
@@ -41,21 +43,25 @@ def demonstrate_import_pain() -> str:
     ModuleNotFoundError: No module named 'numpy'
     $ pip install numpy # Pollutes global environment
     $ python script.py # Finally works, but fragile
-   
+
     # THE POWER-UP (with uv):
     $ uv run script.py # Just works, isolated, fast, reproducible
     """
+
+
 def main() -> None:
     print("=== Lesson 0.1: The Pain of Manual Dependencies ===")
     print(demonstrate_import_pain())
-   
+
     print("\n=== The Power-Up ===")
     print("Add this to any script:")
-    print('#!/usr/bin/env -S uv run --script')
-    print('# /// script')
+    print("#!/usr/bin/env -S uv run --script")
+    print("# /// script")
     print('# dependencies = ["numpy"]')
-    print('# ///')
+    print("# ///")
     print("\nNow it runs anywhere with: uv run script.py")
+
+
 if __name__ == "__main__":
     main()
 ```
@@ -90,26 +96,33 @@ Analogy: A recipe with built-in taste tests.
 >>> add(-1, 1)
 0
 """
+
+
 def add(a: int, b: int) -> int:
     """Add two numbers.
-   
+
     >>> add(10, 20)
     30
     >>> add(0, 0)
     0
     """
     return a + b
+
+
 def main() -> None:
     import doctest
+
     results = doctest.testmod()
-   
+
     print("=== Lesson 0.2: doctest Results ===")
     print(f"Tests run: {results.attempted}")
     print(f"Failures: {results.failed}")
-   
+
     if results.failed == 0:
         print("\n✓ All doctests passed!")
         print("Run with: python -m doctest lesson.py -v")
+
+
 if __name__ == "__main__":
     main()
 ```
@@ -140,24 +153,35 @@ Lesson 0.3: pytest
 >>> divide(10, 2)
 5.0
 """
+
+
 def divide(a: float, b: float) -> float:
     """Divide a by b.
-   
+
     >>> divide(6, 3)
     2.0
     """
     if b == 0:
         raise ValueError("Cannot divide by zero")
     return a / b
+
+
 # PYTEST TEST FUNCTIONS
 def test_divide_positive():
     assert divide(10, 2) == 5.0
+
+
 def test_divide_negative():
     assert divide(-10, 2) == -5.0
+
+
 def test_divide_by_zero():
     import pytest
+
     with pytest.raises(ValueError):
         divide(10, 0)
+
+
 def main() -> None:
     print("=== Lesson 0.3: pytest ===")
     print("Run tests with: uv run pytest lesson.py --doctest-modules -v")
@@ -165,6 +189,8 @@ def main() -> None:
     print(" 1. All test_* functions")
     print(" 2. All doctests in docstrings")
     print(" 3. Gives a clean report")
+
+
 if __name__ == "__main__":
     main()
 ```
@@ -1622,22 +1648,24 @@ from pathlib import Path
 from typing import Any, Dict, List
 import numpy as np
 import torch
+
+
 def set_seed(seed: int = 42) -> None:
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
     if torch.cuda.is_available():
         torch.cuda.manual_seed_all(seed)
-def log_experiment(config: Dict[str, Any], results: Dict[str, Any],
-                   log_file: str = "experiments.jsonl") -> None:
-    log = {
-        "timestamp": datetime.now().isoformat(),
-        "config": config,
-        "results": results
-    }
+
+
+def log_experiment(
+    config: Dict[str, Any], results: Dict[str, Any], log_file: str = "experiments.jsonl"
+) -> None:
+    log = {"timestamp": datetime.now().isoformat(), "config": config, "results": results}
     Path(log_file).open("a").write(json.dumps(log) + "\n")
-def run_ablation(base_config: Dict[str, Any], key: str,
-                 values: List[Any], run_fn) -> List[Dict]:
+
+
+def run_ablation(base_config: Dict[str, Any], key: str, values: List[Any], run_fn) -> List[Dict]:
     results = []
     for value in values:
         config = {**base_config, key: value}
