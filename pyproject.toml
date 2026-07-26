@@ -94,7 +94,7 @@ doctest_optionflags = [
   "ELLIPSIS",
   "NORMALIZE_WHITESPACE",
 ]
-testpaths = ["src"]
+testpaths = ["src", "notes"]
 
 [tool.pytest-watcher]
 now = true
