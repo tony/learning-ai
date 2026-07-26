@@ -76,6 +76,30 @@ Anchor lessons in practical AI work:
 - Performance timing in main() functions helps understand complexity
 - Use minimal sleeps and ellipses for concurrency tests
 
+### Classes with fields
+
+**Classes with fields** — `NamedTuple`, dataclasses — document every field in
+an `Attributes` section:
+
+```python
+@dataclass(frozen=True, slots=True)
+class Args:
+    """Parsed command-line arguments.
+
+    Attributes
+    ----------
+    seed : int
+        Seed applied to every random source before the lesson runs.
+    artifact_dir : Path
+        Directory the lesson writes figures and checkpoints to.
+    """
+```
+
+A type says how a field is shaped, not what it holds. Describing each one
+keeps that meaning next to the code, and anything that renders the class —
+autodoc, a REPL, an editor tooltip — has a description to show instead of a
+bare name.
+
 ### Doctests
 
 **All functions and methods MUST have working doctests.** Doctests serve as both documentation and tests.
