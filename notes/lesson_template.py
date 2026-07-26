@@ -430,7 +430,32 @@ def test_stable_hash_order_independent() -> None:
 
 @dataclass(frozen=True, slots=True)
 class Args:
-    """Parsed command-line arguments."""
+    """Parsed command-line arguments.
+
+    Attributes
+    ----------
+    seed : int
+        Random seed applied before the demo runs. Default 42.
+    doctest : bool
+        Run the doctests before the demo. On by default; ``--no-doctest``
+        turns it off.
+    doctest_only : bool
+        Run the doctests and exit without running the demo.
+    verbose : bool
+        Report each doctest rather than only failures.
+    bench : bool
+        Run the micro-benchmark after the demo.
+    bench_number : int
+        Iterations the benchmark times. Default 1000.
+    artifact_dir : Path
+        Directory artifacts and logs are written to. Defaults to the
+        lesson's own directory under the repository's ``artifacts/``.
+    show_index : bool
+        Print the lesson index — dependencies, successors, and related
+        lessons — instead of running anything.
+    no_log : bool
+        Skip writing artifacts and logs entirely.
+    """
 
     seed: int
     doctest: bool
