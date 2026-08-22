@@ -5,7 +5,8 @@ How this project writes prose, for humans and agents alike. It governs
 a reader reaches in this repository.
 
 For environment setup, the gates, and pull request workflow, see
-[CONTRIBUTING.md](CONTRIBUTING.md).
+[CONTRIBUTING.md](CONTRIBUTING.md). For curriculum scope — which domains a
+lesson may cover — see [notes/lesson_plan.md](../notes/lesson_plan.md).
 
 ## Voice
 
@@ -62,17 +63,6 @@ a lesson made the choice it did. Serve them first.
   leave after one paragraph.
 - **Name the trade-off.** If a power-up costs something a stdlib version does
   not — a dependency, a loss of transparency — say so, and say what it buys.
-
-## Narrative guidance
-
-Anchor every lesson in one of four domains:
-
-- Data collection and preprocessing
-- Training and evaluation
-- Serving/inference and monitoring
-- Reliability, performance, and correctness
-
-A lesson that fits none of these is out of scope for this curriculum.
 
 ## README
 
