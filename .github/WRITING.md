@@ -63,6 +63,17 @@ a lesson made the choice it did. Serve them first.
 - **Name the trade-off.** If a power-up costs something a stdlib version does
   not — a dependency, a loss of transparency — say so, and say what it buys.
 
+## Narrative guidance
+
+Anchor every lesson in one of four domains:
+
+- Data collection and preprocessing
+- Training and evaluation
+- Serving/inference and monitoring
+- Reliability, performance, and correctness
+
+A lesson that fits none of these is out of scope for this curriculum.
+
 ## README
 
 A README is the shortest path from "what is this?" to running the first
