@@ -8,6 +8,9 @@ requires-python = ">=3.14,<4.0"
 authors = [
   {name = "Tony Narlock", email = "tony@git-pull.com"}
 ]
+dependencies = [
+    "numpy>=2.5.4",
+]
 
 [dependency-groups]
 dev = [
