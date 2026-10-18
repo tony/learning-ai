@@ -53,16 +53,25 @@ $ uv run pytest
 
 Documentation is a gate, not a courtesy. Doctests under `src/` and `notes/`
 are executed by this same `pytest` invocation — `--doctest-modules` is
-already in `addopts`, so there is no separate doctest step. Which files are
-reachable, and the one mistake that silently deletes a test, are in
-[WRITING.md](WRITING.md#documented-examples-that-run).
+already in `addopts`. The exception is a lesson whose dependencies the project
+environment lacks, such as `src/053_earn_pytorch.py` (torch): `src/conftest.py`
+keeps it out of the run, and its doctests run through the lesson itself:
+
+```console
+$ uv run --script src/053_earn_pytorch.py --doctest-only
+```
+
+Which files are reachable, and the one mistake that silently deletes a test,
+are in [WRITING.md](WRITING.md#documented-examples-that-run).
 
 Before claiming a test or a gate works, show it failing. A gate that has
 never been red is an assumption.
 
 CI (`.github/workflows/tests.yml`) runs these same four commands — `ruff
 check`, `ruff format --check`, `mypy .`, and `pytest` (invoked there as `uv
-run py.test`) — on Python 3.14. It is the order of record.
+run py.test`) — on Python 3.15. It then runs the doctests of
+`src/053_earn_pytorch.py` with the `--script` command above, which installs
+torch from its own PEP 723 header. It is the order of record.
 
 ## Tests
 
@@ -75,9 +84,10 @@ doctests are. Do not rely on a `test_` function in a lesson file actually
 running; if a lesson needs assertions beyond what a doctest can express, name
 the file to match the pattern, or route the check through a doctest instead.
 
-There is no `conftest.py` and no fixture wired into the doctest namespace —
-see [WRITING.md](WRITING.md#documented-examples-that-run) for what that means
-for a block you write.
+No fixture is wired into the doctest namespace, and `src/conftest.py` only
+excludes lessons from collection — see
+[WRITING.md](WRITING.md#documented-examples-that-run) for what that means for
+a block you write.
 
 Run a single lesson's tests during development:
 
