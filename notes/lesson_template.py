@@ -95,6 +95,7 @@ Module Doctests
 from __future__ import annotations
 
 import argparse
+import doctest
 import hashlib
 import json
 import random
@@ -108,6 +109,7 @@ from typing import TYPE_CHECKING, Any, Final
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Sequence
+    from types import ModuleType
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # LESSON IDENTITY & CONFIGURATION
@@ -660,6 +662,39 @@ def demo(args: Args) -> None:
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 
+def run_doctests(module: ModuleType | None = None, verbose: bool = False) -> doctest.TestResults:
+    r"""
+    Run a module's doctests with the option flags pytest uses.
+
+    ``pyproject.toml`` gives pytest ``ELLIPSIS`` and ``NORMALIZE_WHITESPACE``;
+    passing the same flags here keeps an example's verdict the same under both.
+
+    Parameters
+    ----------
+    module : ModuleType or None
+        Module to test; ``None`` tests ``__main__``, as ``doctest.testmod`` does.
+    verbose : bool
+        Report each example rather than only failures.
+
+    Returns
+    -------
+    doctest.TestResults
+        Counts of failed and attempted examples.
+
+    Examples
+    --------
+    Output that differs only in spacing, or is elided with ``...``, passes:
+
+    >>> import types
+    >>> doc = ">>> print('a  b')\na b\n>>> print('abc')\na...\n"
+    >>> results = run_doctests(types.ModuleType("flags_demo", doc))
+    >>> results.failed, results.attempted
+    (0, 2)
+    """
+    flags = doctest.ELLIPSIS | doctest.NORMALIZE_WHITESPACE
+    return doctest.testmod(module, verbose=verbose, optionflags=flags)
+
+
 def main(argv: list[str] | None = None) -> int:
     """
     Parse args → (optional) doctests → demo.
@@ -669,8 +704,6 @@ def main(argv: list[str] | None = None) -> int:
     int
         Exit code (0=success, 1=failure).
     """
-    import doctest
-
     args = parse_args(argv)
 
     if args.show_index:
@@ -678,7 +711,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if args.doctest:
-        results = doctest.testmod(verbose=args.verbose)
+        results = run_doctests(verbose=args.verbose)
         if results.failed > 0:
             print(f"❌ DOCTESTS FAILED: {results.failed}/{results.attempted}")
             return 1
