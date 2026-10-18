@@ -1772,6 +1772,19 @@ Not critical path, provide context:
 - **SQ-C: Earn Agent Framework** (after Tier 15): Map primitives to LangChain/LlamaIndex/CrewAI, understand abstractions.
 - **SQ-D: Deployment & Serving** (after Tier 9): Docker containers, load balancing, monitoring.
 - **SQ-E: Fine-Tuning Techniques** (after Tier 8): LoRA/PEFT, RLHF basics, evaluation-driven iteration.
+
+Built side quests, each with a full entry after its parent lesson:
+- **3.4a: Convolution as a Sliding Dot Product** (after Lesson 3.4): `src/034a_convolution.py`.
+- **4.2a: Why Momentum Works** (after Lesson 4.2): `src/042a_momentum.py`.
+- **5.2a: Toy Models of Superposition** (after Lesson 5.2): `src/052a_superposition.py`.
+- **5.2b: Sparse Autoencoders on a Toy of Superposition** (after Lesson 5.2): `src/052b_sparse_autoencoders.py`.
+- **5.2c: A Tiny Convolutional Network** (after Lesson 5.2): `src/052c_tiny_cnn.py`.
+- **5.2d: Reading a Unit** (after Lesson 5.2): `src/052d_reading_a_unit.py`.
+- **5.2e: An Activation Atlas** (after Lesson 5.2): `src/052e_activation_atlas.py`.
+- **5.2f: Contrastive Learning, CLIP's Mechanism at Toy Scale** (after Lesson 5.2): `src/052f_contrastive_learning.py`.
+- **5.2g: How to Read t-SNE Without Being Fooled** (after Lesson 5.2): `src/052g_tsne_pitfalls.py`.
+- **7.3a: How Attention Scores Keys** (after Lesson 7.3): `src/073a_attention_scoring.py`.
+- **8.2a: Grokking on Modular Addition** (after Lesson 8.2): `src/082a_grokking.py`.
 #### Final Tips
 - **Projects**: Hands-on Python scripts building systems (e.g., capstone CLI for goal planning with mind maps/agents).
 - **Resources**: uv/pytest/ruff/mypy docs, "Hands-On ML" book, Andrew Ng courses, Karpathy videos, papers (e.g., Attention All You Need).
