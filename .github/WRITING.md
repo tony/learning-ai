@@ -128,8 +128,9 @@ prompts before and after.
 existing reference notes under `notes/libs/` use `pycon` — those files are
 markdown and inert either way; match `python` in anything meant to run.
 
-**No `doctest_namespace` fixture exists.** There is no `conftest.py` in this
-repository, so a doctest starts with an empty namespace: it cannot use
+**No `doctest_namespace` fixture exists.** The one `conftest.py`,
+`src/conftest.py`, only keeps lessons with missing dependencies out of
+collection, so a doctest starts with an empty namespace: it cannot use
 `tmp_path` or any other pytest fixture. Import everything a block needs inside
 the block itself.
 
