@@ -30,54 +30,116 @@ terminal and write no files.
 
 ## Lessons
 
-A lesson's number is its place in the
-[lesson plan](notes/lesson_plan.md): `053` is Tier 5, Lesson 3. A letter
-marks a side quest that branches off that lesson, so `052a` follows Lesson
-5.2. Side quests are optional detours, most of them built on a Distill
-article.
+A lesson's number is its place in the [lesson plan](notes/lesson_plan.md):
+`053` is Tier 5, Lesson 3. A letter marks a side quest that branches off that
+lesson, so `052a` follows Lesson 5.2. Side quests are optional detours, most of
+them built on a Distill article.
 
-### Tier 3 — Vectors
+### Tier 3: vectors
 
-| Lesson | What you build | Based on |
-|--------|----------------|----------|
-| [3.4a Convolution as a sliding dot product](src/034a_convolution.py) | Hand-made line detectors at four orientations, each lighting up for lines at its own angle | [Early Vision in InceptionV1](https://distill.pub/2020/circuits/early-vision/) |
+#### [`034a_convolution.py`](src/034a_convolution.py): a sliding dot product
 
-### Tier 4 — Optimization
+Slide a small kernel across an image and take a dot product at every
+position. Hand-made line detectors at four orientations each light up for
+lines at their own angle, the first thing vision networks learn. From
+[An Overview of Early Vision in InceptionV1](https://distill.pub/2020/circuits/early-vision/).
 
-| Lesson | What you build | Based on |
-|--------|----------------|----------|
-| [4.2a Why momentum works](src/042a_momentum.py) | Gradient descent and heavy-ball momentum on a badly conditioned bowl; steps grow with κ for one and √κ for the other | [Why Momentum Really Works](https://distill.pub/2017/momentum/) |
+### Tier 4: optimization
 
-### Tier 5 — Autodiff
+#### [`042a_momentum.py`](src/042a_momentum.py): why momentum works
 
-| Lesson | What you build | Based on |
-|--------|----------------|----------|
-| [5.2a Toy models of superposition](src/052a_superposition.py) | An autoencoder that stores more sparse features than it has dimensions, as overlapping directions | [Toy Models of Superposition](https://transformer-circuits.pub/2022/toy_model/index.html) |
-| [5.2b Sparse autoencoders](src/052b_sparse_autoencoders.py) | A dictionary whose directions line up with the features 5.2a packed together | [Towards Monosemanticity](https://transformer-circuits.pub/2023/monosemantic-features/index.html) |
-| [5.2c A tiny convolutional network](src/052c_tiny_cnn.py) | A one-layer CNN whose kernels become line detectors, though nothing in the loss mentions edges | [Early Vision in InceptionV1](https://distill.pub/2020/circuits/early-vision/) |
-| [5.2d Reading a unit](src/052d_reading_a_unit.py) | One channel read three ways: top dataset examples, a tuning curve over gratings, and feature visualization | [Feature Visualization](https://distill.pub/2017/feature-visualization/), [Curve Detectors](https://distill.pub/2020/circuits/curve-detectors/) |
-| [5.2e An activation atlas](src/052e_activation_atlas.py) | Activation vectors laid out by a hand-written t-SNE, averaged over a grid, and turned back into images | [Activation Atlas](https://distill.pub/2019/activation-atlas/) |
-| [5.2f Contrastive learning](src/052f_contrastive_learning.py) | CLIP's mechanism at toy scale: an "image" encoder and a "text" encoder trained with InfoNCE | [Multimodal Neurons](https://distill.pub/2021/multimodal-neurons/), [CLIP](https://arxiv.org/abs/2103.00020) |
-| [5.2g Reading t-SNE without being fooled](src/052g_tsne_pitfalls.py) | Five ways a t-SNE picture misleads, each measured on data whose true shape is known | [How to Use t-SNE Effectively](https://distill.pub/2016/misread-tsne/) |
-| [5.3 Earn PyTorch](src/053_earn_pytorch.py) | A hand-derived gradient checked against autograd, then one training run by hand and one with `torch.optim` | [PyTorch autograd](https://docs.pytorch.org/docs/stable/autograd.html) |
+Run gradient descent and heavy-ball momentum on the same badly conditioned
+bowl and count their steps. Gradient descent pays for the condition number κ,
+momentum only for √κ: at κ = 10,000, tens of thousands of steps against about
+a thousand. From [Why Momentum Really Works](https://distill.pub/2017/momentum/).
 
-### Tier 6 — Tokenization
+### Tier 5: autodiff
 
-| Lesson | What you build | Based on |
-|--------|----------------|----------|
-| [6.2 Toy BPE](src/062_toy_bpe.py) | GPT-2's byte-level tokenizer in the standard library: train merges, encode, decode, and measure compression | [Sennrich et al. (2016)](https://arxiv.org/abs/1508.07909) |
+#### [`052a_superposition.py`](src/052a_superposition.py): more features than dimensions
 
-### Tier 7 — Transformers
+Squeeze n sparse features through fewer hidden dimensions, with every gradient
+derived by hand. Dense inputs keep only as many features as there are
+dimensions; sparse inputs keep them all, as overlapping directions. From
+[Toy Models of Superposition](https://transformer-circuits.pub/2022/toy_model/index.html).
 
-| Lesson | What you build | Based on |
-|--------|----------------|----------|
-| [7.3a How attention scores keys](src/073a_attention_scoring.py) | Why attention divides by √d_k, and additive scoring against dot-product scoring, trained by hand | [Attention Is All You Need](https://arxiv.org/abs/1706.03762), [Bahdanau et al. (2014)](https://arxiv.org/abs/1409.0473) |
+#### [`052b_sparse_autoencoders.py`](src/052b_sparse_autoencoders.py): unpacking the features
 
-### Tier 8 — A tiny GPT
+Train a wider autoencoder on the hidden layer of 5.2a and ask it to explain
+each activation as a sparse sum of directions. Its dictionary finds the
+features 5.2a packed together, where no single hidden dimension means anything.
+From [Towards Monosemanticity](https://transformer-circuits.pub/2023/monosemantic-features/index.html).
 
-| Lesson | What you build | Based on |
-|--------|----------------|----------|
-| [8.2a Grokking](src/082a_grokking.py) | A small MLP on modular addition that memorizes its training half, then generalizes thousands of steps later | [Power et al. (2022)](https://arxiv.org/abs/2201.02177) |
+#### [`052c_tiny_cnn.py`](src/052c_tiny_cnn.py): a network that learns line detectors
+
+Train a one-layer convolutional network to tell lines at four angles apart.
+Nothing in the loss mentions edges, yet its kernels end up as line detectors,
+and their tuning curves show it. From
+[An Overview of Early Vision in InceptionV1](https://distill.pub/2020/circuits/early-vision/).
+
+#### [`052d_reading_a_unit.py`](src/052d_reading_a_unit.py): three ways to read one channel
+
+Read a channel of the 5.2c network through its top dataset examples, its
+tuning curve over gratings, and a feature visualization found by gradient
+ascent. Where the three agree, the reading is evidence. From
+[Feature Visualization](https://distill.pub/2017/feature-visualization/) and
+[Curve Detectors](https://distill.pub/2020/circuits/curve-detectors/).
+
+#### [`052e_activation_atlas.py`](src/052e_activation_atlas.py): a map of activation space
+
+Collect activation vectors from many images, lay them out in 2-D with a t-SNE
+written by hand, average them over a grid, and turn each cell back into an
+image. From [Activation Atlas](https://distill.pub/2019/activation-atlas/).
+
+#### [`052f_contrastive_learning.py`](src/052f_contrastive_learning.py): CLIP's mechanism at toy scale
+
+Train an "image" encoder and a "text" encoder so matching pairs score high
+under InfoNCE, with both gradients derived by hand. Most units come to fire for
+the same concept in both views. From
+[Multimodal Neurons](https://distill.pub/2021/multimodal-neurons/) and
+[CLIP](https://arxiv.org/abs/2103.00020).
+
+#### [`052g_tsne_pitfalls.py`](src/052g_tsne_pitfalls.py): five ways t-SNE misleads
+
+Run t-SNE on data whose true shape you know. Perplexity joins or splits the
+same clusters, a cluster ten times more spread out comes out the same size,
+uneven gaps come out even, noise comes out clumpy, and a run stopped early
+leaves pinched shapes. Each pitfall is one measured number. From
+[How to Use t-SNE Effectively](https://distill.pub/2016/misread-tsne/).
+
+#### [`053_earn_pytorch.py`](src/053_earn_pytorch.py): autograd against a hand-derived gradient
+
+Derive the gradient of logistic regression by hand, let PyTorch's autograd
+compute it from the forward pass, and check that the two agree to rounding
+error. Then train the model once by hand and once with `torch.optim`, and
+watch the loss curves coincide.
+
+### Tier 6: tokenization
+
+#### [`062_toy_bpe.py`](src/062_toy_bpe.py): GPT-2's tokenizer in the standard library
+
+Start from the 256 byte values, merge the most frequent adjacent pair into a
+new token, and repeat. Encode by replaying the merges, decode by expanding
+tokens back to bytes, and measure bytes per token on held-out text. From
+[Sennrich et al. (2016)](https://arxiv.org/abs/1508.07909).
+
+### Tier 7: transformers
+
+#### [`073a_attention_scoring.py`](src/073a_attention_scoring.py): how attention scores keys
+
+Measure why attention divides by √d_k: without it the softmax collapses onto
+one key as d_k grows. Then train additive and dot-product scoring by hand, and
+see why additive scoring with no bias cannot learn. From
+[Attention Is All You Need](https://arxiv.org/abs/1706.03762) and
+[Bahdanau et al. (2014)](https://arxiv.org/abs/1409.0473).
+
+### Tier 8: a tiny GPT
+
+#### [`082a_grokking.py`](src/082a_grokking.py): memorizing, then generalizing
+
+Train a small network on addition modulo a prime from half of all pairs.
+Training accuracy reaches 99% within a few hundred steps; test accuracy stays
+near chance for thousands more, then climbs to 99%. From
+[Power et al. (2022)](https://arxiv.org/abs/2201.02177).
 
 ## Quick Start
 
@@ -112,9 +174,10 @@ Run every lesson's doctests through pytest:
 $ uv run pytest
 ```
 
-[Earn PyTorch](src/053_earn_pytorch.py) installs torch from PyTorch's CPU
-index through its own header, because PyPI has no torch wheel for Python 3.15.
-`pytest` skips it when torch is not installed; run it with `uv run --script`.
+[`053_earn_pytorch.py`](src/053_earn_pytorch.py) installs torch from
+PyTorch's CPU index through its own header, because PyPI has no torch wheel for
+Python 3.15. `pytest` skips it when torch is not installed; run it with
+`uv run --script`.
 
 ## Requirements
 
