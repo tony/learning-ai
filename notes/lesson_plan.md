@@ -493,6 +493,14 @@ if __name__ == "__main__":
   - **Resource**: NumPy docs.
   - **Demo Prompt**: (Matmul_manual vs A_np @ B_np, benchmark speedup.)
   - **Practice Tips**: Implement both, assert difference < tolerance; measure speedup JSONL.
+- **Side Quest 3.4a: Convolution as a Sliding Dot Product**
+  - **Objectives**: Compute a valid 2-D convolution with loops and NumPy; cross-check them; read oriented line detectors as a tuning table.
+  - **Prerequisites**: 3.1, 3.4.
+  - **The Big Idea**: A convolution reuses one small set of weights at every position; the feature map records where the pattern was found.
+  - **stdlib Pain**: Four nested loops; off-by-one output sizes; kernel rows and columns mixed up.
+  - **Power-Up**: NumPy `sliding_window_view` + `einsum` take every window's dot product without copying.
+  - **Resource**: Olah et al., [Distill: Early Vision in InceptionV1](https://distill.pub/2020/circuits/early-vision/); Schubert et al., [High-Low Frequency Detectors](https://distill.pub/2020/circuits/frequency-edges/).
+  - **File**: `src/034a_convolution.py`
 - **Lesson 3.5: Mini-Capstone: Toy Vector Search Engine**
   - **Objectives**: Index 1k-100k vectors, query top-k, log latency.
   - **Prerequisites**: 3.4.
@@ -543,6 +551,14 @@ if __name__ == "__main__":
   - **Resource**: GD intros.
   - **Demo Prompt**: (Gd_minimize with trajectory, LR comparison table.)
   - **Practice Tips**: LR sweep log final loss/steps; add momentum, compare; early stopping no improvement N steps.
+- **Side Quest 4.2a: Why Momentum Works**
+  - **Objectives**: Explain why one step size cannot suit steep and flat directions; add a velocity term; measure the √κ speedup and show it vanishes with momentum off.
+  - **Prerequisites**: 4.2.
+  - **The Big Idea**: Momentum remembers the last step, so flat directions keep moving while steep ones stop oscillating; cost falls from κ to √κ.
+  - **stdlib Pain**: Per-coordinate Python update loop; reusing gradient descent's step size with momentum diverges.
+  - **Power-Up**: `torch.optim.SGD(params, lr=, momentum=)` (Lesson 5.3).
+  - **Resource**: Goh, [Why Momentum Really Works](https://distill.pub/2017/momentum/).
+  - **File**: `src/042a_momentum.py`
 - **Lesson 4.3: Linear Regression by Hand (MSE)**
   - **Objectives**: Train y = w*x + b GD; overfitting detection.
   - **Prerequisites**: 4.2.
@@ -620,6 +636,62 @@ if __name__ == "__main__":
   - **Resource**: [micrograd](https://github.com/karpathy/micrograd) (~100 lines).
   - **Demo Prompt**: (Value with __add__/__mul__/tanh/backward; main computes df/da/db.)
   - **Practice Tips**: Implement add/mul/tanh, gradcheck FD; train tiny linear loss decreases; graph pretty printer debug topo.
+- **Side Quest 5.2a: Toy Models of Superposition**
+  - **Objectives**: Derive a tied-weight ReLU autoencoder's gradient; check it by central differences; show sparsity decides how many features fit in fewer dimensions.
+  - **Prerequisites**: 5.1, 4.1.
+  - **The Big Idea**: A network stores more features than dimensions by overlapping directions; sparse features rarely co-activate, so the interference is cheap.
+  - **stdlib Pain**: Hand-derived gradient; omitting the encoder term `W D^T X` trains silently to a worse answer.
+  - **Power-Up**: `loss.backward()` and `torch.optim.Adam` (Lesson 5.3).
+  - **Resource**: Elhage et al., [Transformer Circuits: Toy Models of Superposition](https://transformer-circuits.pub/2022/toy_model/index.html).
+  - **File**: `src/052a_superposition.py`
+- **Side Quest 5.2b: Sparse Autoencoders on a Toy of Superposition**
+  - **Objectives**: Derive a sparse autoencoder's gradient (L1 subgradient, shared bias); check it; measure dictionary recovery of known feature directions against hidden dimensions.
+  - **Prerequisites**: 5.2a.
+  - **The Big Idea**: A sparse autoencoder finds a wider set of directions where each activation uses only a few; the L1 penalty makes the packed features the cheap directions.
+  - **stdlib Pain**: Hand-derived gradient; forgetting `bd` also shifts the encoder's input; differentiating through an inactive ReLU.
+  - **Power-Up**: `loss.backward()` and `torch.optim.Adam` (Lesson 5.3).
+  - **Resource**: Bricken et al., [Towards Monosemanticity](https://transformer-circuits.pub/2023/monosemantic-features/index.html).
+  - **File**: `src/052b_sparse_autoencoders.py`
+- **Side Quest 5.2c: A Tiny Convolutional Network**
+  - **Objectives**: Turn a convolution into one matrix product; derive and check gradients of convolution, ReLU, average pooling, and softmax cross-entropy; measure each learned kernel's orientation selectivity.
+  - **Prerequisites**: 3.4a, 5.2a.
+  - **The Big Idea**: A convolutional layer is a linear layer with weights shared across positions; trained to separate line angles, the kernels become detectors for those angles.
+  - **stdlib Pain**: Gradient through shared kernels sums over every position; forgetting the average pool's 1/positions.
+  - **Power-Up**: `nn.Conv2d` and `loss.backward()` (Lesson 5.3).
+  - **Resource**: Olah et al., [Distill: Early Vision in InceptionV1](https://distill.pub/2020/circuits/early-vision/).
+  - **File**: `src/052c_tiny_cnn.py`
+- **Side Quest 5.2d: Reading a Unit**
+  - **Objectives**: Rank a dataset by one channel; measure its tuning curve; derive and check the input gradient and climb it; treat disagreement among the three readings as information.
+  - **Prerequisites**: 5.2c.
+  - **The Big Idea**: No single tool says what a unit is: dataset examples, tuning curves, and feature visualization each fail differently, and agreement is evidence.
+  - **stdlib Pain**: Hand-derived input gradient; scattering at the wrong window offset or dropping the ReLU mask still climbs, to the wrong picture.
+  - **Power-Up**: `requires_grad` on the image with `torch.autograd.grad` (Lesson 5.3).
+  - **Resource**: Olah et al., [Feature Visualization](https://distill.pub/2017/feature-visualization/); Cammarata et al., [Curve Detectors](https://distill.pub/2020/circuits/curve-detectors/).
+  - **File**: `src/052d_reading_a_unit.py`
+- **Side Quest 5.2e: An Activation Atlas**
+  - **Objectives**: Collect activation vectors; write t-SNE's divergence and gradient by hand and check it; average over a grid and invert each cell to an image; judge the layout's honesty.
+  - **Prerequisites**: 5.2d, 5.2c.
+  - **The Big Idea**: A network produces a point in channel space at each position; t-SNE flattens that space, and inverting each cell's average is a hypothesis about the region, not proof.
+  - **stdlib Pain**: Exact O(n²) t-SNE with a hand-checked gradient; a missing kernel factor still lays points out, wrongly.
+  - **Power-Up**: `torch.autograd.grad` for inversion; library t-SNE or UMAP with approximate neighbours (Lesson 5.3).
+  - **Resource**: Carter et al., [Activation Atlas](https://distill.pub/2019/activation-atlas/).
+  - **File**: `src/052e_activation_atlas.py`
+- **Side Quest 5.2f: Contrastive Learning, CLIP's Mechanism at Toy Scale**
+  - **Objectives**: Write symmetric InfoNCE with soft targets; derive and check both encoders' gradients; measure cross-view retrieval and cross-view units against an untrained control.
+  - **Prerequisites**: 3.1, 2.3, 5.2a.
+  - **The Big Idea**: Telling encoders only which image and text belong together forces a concept to one region of a shared space from two views.
+  - **stdlib Pain**: Loss over a B by B matrix with hand-derived gradients for two encoders; dropping one half of the loss or the ReLU mask trains silently worse.
+  - **Power-Up**: `loss.backward()`, `F.cross_entropy`, and `torch.optim.AdamW` (Lesson 5.3).
+  - **Resource**: Goh et al., [Multimodal Neurons](https://distill.pub/2021/multimodal-neurons/); Radford et al., [CLIP](https://arxiv.org/abs/2103.00020).
+  - **File**: `src/052f_contrastive_learning.py`
+- **Side Quest 5.2g: How to Read t-SNE Without Being Fooled**
+  - **Objectives**: Sweep perplexity; show t-SNE does not preserve cluster size or inter-cluster distance; show noise looks clumpy and early stopping is not convergence; break every metric to prove it can fail.
+  - **Prerequisites**: 5.2e.
+  - **The Big Idea**: t-SNE keeps each point's neighbours and nothing else; sizes, gaps, and shapes are properties of the optimizer as much as of the data.
+  - **stdlib Pain**: Each pitfall reruns the O(n²) NumPy t-SNE; reading one perplexity, or a metric measured only on the layout.
+  - **Power-Up**: None yet; scikit-learn `sklearn.manifold.TSNE` exposes `perplexity` and `max_iter`, but no lesson introduces scikit-learn.
+  - **Resource**: Wattenberg et al., [How to Use t-SNE Effectively](https://distill.pub/2016/misread-tsne/); van der Maaten and Hinton, Visualizing Data using t-SNE, JMLR 9 (2008).
+  - **File**: `src/052g_tsne_pitfalls.py`
 - **Lesson 5.3: Earn PyTorch – Tensor Autograd + Training Loop Skeleton**
   - **Objectives**: Re-implement training PyTorch; reusable loop (seed/log/eval/checkpoint).
   - **Prerequisites**: 5.2.
@@ -635,6 +707,7 @@ if __name__ == "__main__":
   - **Resource**: [PyTorch docs](https://pytorch.org/docs/stable).
   - **Demo Prompt**: (Simple gradient; same example 5.2; linear regression loop skeleton with epochs/loss print.)
   - **Practice Tips**: Compare PyTorch gradients scalar engine matched case; implement logistic regression PyTorch learns synthetic; add device switch keep CPU default.
+  - **File**: `src/053_earn_pytorch.py`
 - **Lesson 5.4: Shape Discipline Micro-Lessons**
   - **Objectives**: Explicit invariants like (B,T,D); assertion helpers/typed shapes.
   - **Prerequisites**: 5.3.
@@ -683,6 +756,7 @@ if __name__ == "__main__":
   - **Resource**: BPE algorithm papers.
   - **Demo Prompt**: (BPETokenizer with train/encode; main trains text, prints compression.)
   - **Practice Tips**: Train two corpora, compare merges; add reserved <unk>/<pad>, test decode; benchmark encode speed merges increase, log JSONL.
+  - **File**: `src/062_toy_bpe.py`
 - **Lesson 6.3: Earn tiktoken – Production Tokenization**
   - **Objectives**: Use production tokenizer; compare toy BPE.
   - **Prerequisites**: 6.2.
@@ -761,6 +835,14 @@ if __name__ == "__main__":
   - **Resource**: NumPy broadcasting docs.
   - **Demo Prompt**: (Attention_np parity list version tolerance; main benchmarks.)
   - **Practice Tips**: Benchmark list vs NumPy increasing (T,d); add batch dimension test shapes.
+- **Side Quest 7.3a: How Attention Scores Keys**
+  - **Objectives**: Measure softmax saturation over unscaled dot products as d_k grows and show 1/sqrt(d_k) removes it; hand-derive and gradient-check dot-product and additive scores; train both and explain why additive scoring without its bias stays at chance.
+  - **Prerequisites**: 7.3.
+  - **The Big Idea**: A score says how well a key matches a query and the softmax turns scores into weights; scaling by 1/sqrt(d_k) keeps the softmax where it has a gradient.
+  - **stdlib Pain**: Hand-written gradients over (batch, keys, hidden) tensors; forgetting the tanh derivative or the bias.
+  - **Power-Up**: `torch.nn.functional.scaled_dot_product_attention` (Lesson 7.4); trade-off: lose the visible derivation, gain masks, multi-head batching, fused kernels.
+  - **Resource**: Vaswani et al., [Attention Is All You Need](https://arxiv.org/abs/1706.03762); Bahdanau et al., [Additive attention](https://arxiv.org/abs/1409.0473); Luong et al., [Dot and general scores](https://arxiv.org/abs/1508.04025); Olah and Carter, [Attention and Augmented RNNs](https://distill.pub/2016/augmented-rnns/).
+  - **File**: `src/073a_attention_scoring.py`
 - **Lesson 7.4: Multi-Head Attention (PyTorch)**
   - **Objectives**: Head split/merge shape discipline; gradients flow.
   - **Prerequisites**: 7.3.
@@ -826,6 +908,14 @@ if __name__ == "__main__":
   - **Resource**: [nanoGPT](https://github.com/karpathy/nanoGPT) (~1000 lines).
   - **Demo Prompt**: (GPTModel class, train small corpus, generate samples.)
   - **Practice Tips**: Train small dataset loss decreases; deterministic sampling tests seeded snapshot.
+- **Side Quest 8.2a: Grokking on Modular Addition**
+  - **Objectives**: Derive and gradient-check a one-hidden-layer MLP with shared embedding; write AdamW in NumPy; measure the gap between train and test accuracy reaching 99%.
+  - **Prerequisites**: 8.2, 5.2a.
+  - **The Big Idea**: Fitting the training set and finding the rule are different events; weight decay drifts the weights from the memorized table toward the compact rule.
+  - **stdlib Pain**: Eight hand-derived gradients, including the shared embedding's two terms; dropping one still memorizes.
+  - **Power-Up**: `nn.Embedding`, `nn.Linear`, `torch.optim.AdamW`, autograd (Lesson 5.3).
+  - **Resource**: Power et al., [Grokking](https://arxiv.org/abs/2201.02177).
+  - **File**: `src/082a_grokking.py`
 - **Lesson 8.3: Decoding Integration (Greedy/Temp/Top-k/Top-p)**
   - **Objectives**: Decoding logits strategies.
   - **Prerequisites**: 1.4,2.2,8.2.
