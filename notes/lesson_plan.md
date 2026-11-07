@@ -2,6 +2,12 @@
 
 The plan assumes no math/AI knowledge, starts super simple (e.g., numbers as data with analogies), builds gradually with sub-lessons/side quests. Total time: 150-200 hours.
 
+Most lessons anchor in one of four domains: data collection and
+preprocessing, training and evaluation, serving/inference and monitoring,
+or reliability, performance, and correctness. Tier 0 (toolchain) and
+early math-foundation tiers such as Tier 3 lay groundwork outside that
+framing.
+
 #### Tier 0: Toolchain Foundation
 **Goal:** Every future lesson is executable, testable, linted, typed, and measurable.
 **Total Time:** 12-20 hours.
