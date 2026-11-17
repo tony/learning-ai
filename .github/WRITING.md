@@ -5,7 +5,8 @@ How this project writes prose, for humans and agents alike. It governs
 a reader reaches in this repository.
 
 For environment setup, the gates, and pull request workflow, see
-[CONTRIBUTING.md](CONTRIBUTING.md).
+[CONTRIBUTING.md](CONTRIBUTING.md). For curriculum scope — which domains a
+lesson may cover — see [notes/lesson_plan.md](../notes/lesson_plan.md).
 
 ## Voice
 
